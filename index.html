@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angle Quest — Petualangan Rahasia Sudut</title>
+<style>
+:root{--navy:#17345b;--teal:#087f83;--mint:#dff7ed;--cream:#fff8e8;--gold:#ffc94a;--coral:#ff786c;--ink:#20334f;--muted:#64748b;--line:#d8e5df;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:#20334f;background:linear-gradient(135deg,#d9f5ff,#f7f3df 55%,#dcf6d8);min-height:100vh;opacity:1} body,main,section,p,h1,h2,h3,label,button,input,.question,.stimulus,.option,.stat,.footer{ text-shadow:none }
+button,input{font:inherit}button{cursor:pointer;border:0}
+.topbar{padding:14px 5vw;display:flex;justify-content:space-between;align-items:center;color:var(--navy);font-weight:900}
+.brand{display:flex;align-items:center;gap:10px;font-size:1.05rem}.brand-mark{background:var(--gold);border:3px solid var(--navy);border-radius:12px;padding:7px 10px;box-shadow:3px 3px 0 var(--navy)}
+.pill{background:#ffffffb8;border:1px solid #c9ddd5;border-radius:999px;padding:8px 14px;font-size:.85rem}
+.wrap{width:min(980px,92vw);margin:12px auto 50px}
+.hero{position:relative;overflow:hidden;border:4px solid var(--navy);border-radius:28px;background:linear-gradient(120deg,#0c777c,#15999a 55%,#2eaa8b);color:#ffffff;opacity:1;padding:34px clamp(22px,5vw,56px);box-shadow:0 10px 0 #17345b22}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:24px;background:#ffffff14;transform:rotate(25deg)}.hero:before{width:220px;height:220px;right:-30px;top:-90px}.hero:after{width:130px;height:130px;right:190px;bottom:-100px}
+.hero h1{color:#ffffff;opacity:1;font-size:clamp(2rem,5vw,3.6rem);line-height:1.02;margin:8px 0 12px;max-width:650px;position:relative}.hero p{color:#ffffff;opacity:1;max-width:620px;line-height:1.55;margin:0;position:relative}.hero .tag{display:inline-block;background:var(--gold);color:var(--navy);padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:900;letter-spacing:.08em}
+.floating{position:absolute;right:7%;bottom:15px;font-size:clamp(3rem,8vw,6rem);filter:drop-shadow(4px 5px 0 #17345b55);animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.panel{opacity:1;background:#ffffff;border:2px solid #c8ddd4;border-radius:24px;padding:clamp(18px,3vw,30px);margin-top:20px;box-shadow:0 8px 0 #17345b12}
+.panel h2{margin:0 0 8px;color:var(--navy);font-size:1.45rem}.sub{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.identity{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-weight:800;margin-bottom:7px}.field input{opacity:1;color:#20334f;width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:13px;background:#fbfffd;outline:none}.field input:focus{border-color:var(--teal);box-shadow:0 0 0 3px #087f8320}
+.primary{background:var(--gold);color:var(--navy);font-weight:950;padding:13px 22px;border-radius:14px;box-shadow:0 4px 0 #d89d24;transition:.15s}.primary:hover{transform:translateY(-2px);filter:brightness(1.03)}.primary:active{transform:translateY(2px);box-shadow:0 1px 0 #d89d24}.primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.secondary{background:#e8f5f0;color:var(--teal);font-weight:850;padding:11px 18px;border-radius:13px}
+.hidden{display:none!important}
+.progressrow{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;font-weight:850;color:var(--navy)}.progress{height:12px;border-radius:99px;background:#e6eee9;overflow:hidden;margin-bottom:20px}.bar{height:100%;width:0;background:linear-gradient(90deg,#08a6a0,#9bdc69);border-radius:99px;transition:width .5s}
+.qmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.chip{font-size:.76rem;font-weight:900;border-radius:99px;padding:6px 10px;background:#e7f6ef;color:#08736f}.chip.gold{background:#fff1c8;color:#8a5b00}
+.stimulus{background:#f0f8f3;border-left:5px solid var(--teal);padding:14px 16px;border-radius:12px;margin:14px 0;line-height:1.55}.question{font-size:1.13rem;font-weight:850;line-height:1.5;margin:16px 0}
+.visual{display:flex;justify-content:center;align-items:center;min-height:110px;margin:14px auto;padding:8px;background:#fffdf6;border:1px dashed #d8dfcf;border-radius:16px;max-width:460px}.visual svg{max-width:100%;height:auto}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.option{opacity:1;background:#ffffff;border:2px solid #d9e6df;border-radius:14px;padding:13px;text-align:left;color:var(--ink);font-weight:750;transition:.15s;min-height:52px}.option:hover{border-color:var(--teal);background:#f1fbf6;transform:translateY(-1px)}.option.selected{border-color:var(--teal);background:#e5f7ef}.option:disabled{cursor:default} select{appearance:auto!important;-webkit-appearance:menulist!important;color:#17345b!important;background-color:#ffffff!important;border:2px solid #9abbb0!important;opacity:1!important;color-scheme:light!important;font-weight:800} select option{color:#17345b!important;background:#ffffff!important} select:focus{outline:3px solid #b8e8d4!important;outline-offset:1px}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap}
+.feedback{margin-top:18px;border-radius:16px;padding:15px 17px;line-height:1.5;animation:pop .3s ease}.feedback.good{background:#e6f8ec;border:2px solid #8bd6a4}.feedback.try{background:#fff4d9;border:2px solid #f1ce72}.feedback.bad{background:#ffebe8;border:2px solid #f4a69e}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(7px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.feedback strong{display:block;margin-bottom:4px}.hintline{font-size:.9rem;color:var(--muted);margin-top:8px}
+.result{text-align:center}.scorebig{font-size:clamp(3rem,9vw,5rem);font-weight:1000;color:var(--teal);line-height:1;margin:12px}.stars{font-size:2.4rem;letter-spacing:8px;animation:float 2s infinite}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.stat{background:#f1f8f3;border-radius:15px;padding:14px}.stat b{display:block;font-size:1.5rem;color:var(--navy)}.reviewlist{text-align:left;margin-top:20px}.reviewlist li{margin:9px 0;line-height:1.45}
+.footer{text-align:center;color:#5d7381;font-size:.82rem;padding:20px}
+@media(max-width:650px){.identity,.options{grid-template-columns:1fr}.floating{opacity:.35;right:3%}.summary{grid-template-columns:1fr}.hero{padding-bottom:65px}.topbar{padding:12px 4vw}.actions{align-items:stretch}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="brand"><span class="brand-mark">∠</span> ANGLE QUEST</div><div class="pill">🧭 Petualangan Matematika Kelas 6</div></div>
+<main class="wrap">
+<section class="hero">
+<span class="tag">MISI GEOMETRI • LEVEL 06</span>
+<h1>Petualangan Rahasia Sudut</h1>
+<p>Jelajahi kuil kuno, bangun jembatan, dan pecahkan teka-teki sudut. Kumpulkan poin dengan teliti—setiap jawaban adalah langkah menuju harta karun!</p>
+<div class="floating">🗺️</div>
+</section>
+
+<section id="start" class="panel">
+<h2>🎒 Sebelum memulai misi</h2>
+<p class="sub">Isi identitas petualang terlebih dahulu. Kamu akan mengerjakan 9 soal pemanasan, lalu 10 tantangan TKA-style.</p>
+<div class="identity">
+<div class="field"><label for="studentName">Nama lengkap</label><input id="studentName" autocomplete="name" placeholder="Tulis nama kamu"></div>
+<div class="field"><label for="studentClass">Kelas</label><input id="studentClass" placeholder="Contoh: VI-A"></div>
+</div>
+<div class="actions"><span class="hintline">⏳ Setiap soal memiliki maksimal 2 kesempatan.</span><button class="primary" id="startBtn">Mulai Petualangan →</button></div>
+</section>
+
+<section id="quiz" class="panel hidden">
+<div class="progressrow"><span id="phaseLabel">MISI 1 • PEMANASAN</span><span id="counter">1 / 19</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="qmeta"><span class="chip" id="typeChip">PILIHAN GANDA</span><span class="chip gold" id="attemptChip">Kesempatan 1 dari 2</span><span class="chip" id="scoreChip">Skor: 0</span></div>
+<div id="stimulus" class="stimulus hidden"></div>
+<div id="visual" class="visual hidden"></div>
+<div id="question" class="question"></div>
+<div id="options" class="options"></div>
+<div id="feedback" class="hidden"></div>
+<div class="actions"><span class="hintline" id="instruction">Pilih satu jawaban yang paling tepat.</span><button class="primary" id="checkBtn" disabled>Periksa Jawaban</button><button class="primary hidden" id="nextBtn">Lanjut →</button></div>
+</section>
+
+<section id="result" class="panel result hidden">
+<div class="stars">🏆 ✨ 🏆</div><h2>Petualangan Selesai!</h2>
+<p class="sub" id="resultGreeting"></p>
+<div class="scorebig" id="finalScore">0</div><b>POIN DARI 100</b>
+<div class="summary">
+<div class="stat"><b id="correctCount">0</b>Soal benar</div>
+<div class="stat"><b id="retryCount">0</b>Soal mengulang</div>
+<div class="stat"><b id="wrongCount">0</b>Belum tepat</div>
+</div>
+<p id="resultMessage"></p>
+<div class="reviewlist"><h3>📜 Catatan perjalanan</h3><ol id="reviewItems"></ol></div>
+<div class="actions"><button class="secondary" onclick="location.reload()">↻ Ulangi dari awal</button><button class="primary" id="printBtn">Cetak Hasil</button></div>
+</section>
+<div class="footer">ANGLE QUEST • Berpikir cermat, melangkah hebat! 🌟</div>
+</main>
+<script>
+const questions = [
+{phase:0,kind:"Isian pilihan",topic:"Jenis sudut",stimulus:"Sebuah engsel gerbang dibuka sehingga membentuk sudut sebesar 95°.",q:"Sebutkan jenis sudut yang besarnya 95°.",opts:["Sudut lancip","Sudut siku-siku","Sudut tumpul","Sudut lurus"],a:2,ex:"95° lebih besar dari 90° dan lebih kecil dari 180°. Jadi, 95° termasuk sudut tumpul.",praise:"Tepat! Kamu berhasil mengenali sudut tumpul."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut berpenyiku",stimulus:"Dua sudut membentuk sudut siku-siku. Jumlah keduanya adalah 90°.",q:"Jika sudut A dan B berpenyiku, dan besar sudut A adalah 35°, berapakah besar sudut B?",opts:["45°","55°","65°","145°"],a:1,ex:"Sudut B = 90° − 35° = 55°. Dua sudut berpenyiku berjumlah 90°.",praise:"Hebat! Kamu menggunakan hubungan sudut berpenyiku dengan benar."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut bertolak belakang",stimulus:"Dua batang kayu membentuk huruf X saat dipasang sebagai penyangga.",q:"Jika salah satu sudut besarnya 120°, berapakah besar sudut di hadapannya?",opts:["60°","90°","120°","240°"],a:2,ex:"Sudut yang saling bertolak belakang memiliki besar yang sama, yaitu 120°.",praise:"Benar! Kamu memahami sifat sudut bertolak belakang."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut berpelurus",stimulus:"Dua bagian pagar terpasang pada satu garis lurus.",q:"Hitunglah pelurus dari sudut yang besarnya 75°.",opts:["75°","95°","105°","115°"],a:2,ex:"Sudut pelurus berjumlah 180°. Maka 180° − 75° = 105°.",praise:"Bagus! Kamu tepat menggunakan jumlah sudut berpelurus."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut berpelurus",stimulus:"Dua sudut X dan Y bersebelahan pada satu garis lurus. Besar sudut X adalah dua kali besar sudut Y.",q:"Berapakah besar masing-masing sudut X dan Y?",opts:["X = 60°, Y = 120°","X = 120°, Y = 60°","X = 90°, Y = 90°","X = 100°, Y = 80°"],a:1,ex:"Jumlahnya 180°. Karena X dua kali Y, pembagian 180° menjadi tiga bagian sama memberi Y = 60° dan X = 120°.",praise:"Luar biasa! Kamu dapat membagi sudut lurus berdasarkan perbandingan."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut siku-siku",stimulus:"Tiga bilah kecil dipasang di sudut meja sehingga bersama-sama mengisi tepat satu sudut siku-siku.",q:"Dua sudut masing-masing besarnya 25° dan 30°. Berapakah besar sudut ketiga?",opts:["25°","30°","35°","55°"],a:2,ex:"Sudut siku-siku besarnya 90°. Sudut ketiga = 90° − 25° − 30° = 35°.",praise:"Mantap! Kamu mampu menentukan bagian sudut yang belum diketahui."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut bertolak belakang",stimulus:"Dua garis berpotongan membentuk huruf X. Sepasang sudut yang saling bertolak belakang dijumlahkan.",q:"Jika jumlah sepasang sudut bertolak belakang adalah 160°, berapakah besar salah satu sudut tersebut?",opts:["40°","60°","80°","160°"],a:2,ex:"Kedua sudut bertolak belakang sama besar. Jadi masing-masing = 160° ÷ 2 = 80°.",praise:"Tepat sekali! Kamu menggabungkan sifat sudut bertolak belakang dan operasi pembagian."},
+{phase:0,kind:"Pilihan ganda",topic:"Sudut lancip",stimulus:"Sebuah desain ubin menggunakan sudut yang besarnya seperempat dari sudut lurus.",q:"Jika sebuah sudut besarnya 1/4 dari sudut lurus, termasuk jenis sudut apakah itu?",opts:["Sudut lancip","Sudut siku-siku","Sudut tumpul","Sudut refleks"],a:0,ex:"Seperempat sudut lurus = 180° ÷ 4 = 45°. Karena kurang dari 90°, sudut tersebut adalah sudut lancip.",praise:"Keren! Kamu mengubah pecahan sudut menjadi besar sudut yang tepat."},
+{phase:0,kind:"Pilihan ganda",topic:"Gabungan hubungan sudut",stimulus:"Sudut A dan B saling berpenyiku. Sudut B dan C saling berpelurus.",q:"Jika besar sudut A adalah 40°, berapakah besar sudut C?",opts:["40°","50°","130°","140°"],a:2,ex:"B = 90° − 40° = 50°. Karena B dan C berpelurus, C = 180° − 50° = 130°.",praise:"Hebat! Kamu berhasil menggabungkan dua hubungan sudut dalam satu masalah."},
+
+{phase:1,kind:"PG • Penalaran",topic:"Perputaran",stimulus:"Sebuah wahana memiliki papan petunjuk berbentuk lingkaran yang dibagi menjadi 12 bagian sama besar. Jarum bergerak searah jarum jam dari angka 12 hingga angka 8.",visual:"clock",q:"Besar sudut putaran jarum dan jenis sudut yang terbentuk adalah ....",opts:["120°, sudut tumpul","180°, sudut lurus","240°, sudut refleks","300°, sudut refleks"],a:2,ex:"Setiap jarak angka bernilai 30°. Dari 12 ke 8 searah jarum jam melewati 8 bagian: 8 × 30° = 240°. Sudut 240° adalah sudut refleks.",praise:"Tepat! Kamu membaca putaran pada lingkaran dengan cermat."},
+{phase:1,kind:"PGK • Pilih semua yang benar",topic:"Klasifikasi sudut",stimulus:"Seorang builder merancang bangunan dengan empat ukuran sudut: A = 90°, B = 180°, C = 225°, dan D = 360°.",q:"Manakah pernyataan yang benar? Pilih semua jawaban yang tepat.",opts:["A. Sudut A termasuk sudut siku-siku.","B. Sudut B termasuk sudut refleks.","C. Sudut C termasuk sudut refleks.","D. Sudut D termasuk sudut penuh."],multi:true,a:[0,2,3],ex:"90° adalah siku-siku, 180° adalah lurus, 225° adalah refleks, dan 360° adalah sudut penuh. Jadi A, B, dan C benar.",praise:"Bagus! Kamu mampu mengklasifikasikan beberapa jenis sudut sekaligus."},
+{phase:1,kind:"PGK • Benar/Salah",topic:"Sudut refleks",stimulus:"Sebuah robot konstruksi memutar lengannya sebesar 210° dari posisi awal.",q:"Tentukan Benar atau Salah untuk setiap pernyataan.",tf:["Putaran lengan robot membentuk sudut refleks.","Besar putaran kurang dari 180°.","Sudut putaran lebih kecil daripada sudut lurus."],a:[true,false,false],ex:"210° berada di antara 180° dan 360°, sehingga termasuk sudut refleks. Jadi, putaran itu bukan kurang dari 180° dan juga bukan lebih kecil daripada sudut lurus.",praise:"Kerja bagus! Kamu dapat menilai pernyataan berdasarkan batas besar sudut."},
+{phase:1,kind:"PG • Aplikasi",topic:"Sudut berpenyiku",stimulus:"Penyangga rak buku membentuk sudut siku-siku 90°. Sebuah batang tambahan membaginya menjadi dua bagian. Salah satu sudut besarnya 37°.",q:"Besar sudut yang dibentuk batang tambahan dengan sisi lainnya adalah ....",opts:["43°","53°","63°","143°"],a:1,ex:"Kedua sudut berpenyiku berjumlah 90°. Jadi sudut lainnya = 90° − 37° = 53°.",praise:"Benar! Kamu menemukan sudut yang hilang pada konstruksi."},
+{phase:1,kind:"PGK • Pilih semua yang benar",topic:"Sudut berpelurus",stimulus:"Dua batang besi pada rangka jembatan membentuk satu garis lurus. Salah satu sudut besarnya 68°, sedangkan sudut di sebelahnya belum diketahui.",q:"Pilih semua pernyataan yang benar.",opts:["A. Sudut yang belum diketahui adalah 102°.","B. Jumlah kedua sudut adalah 180°.","C. Sudut yang belum diketahui termasuk sudut tumpul.","D. Sudut yang belum diketahui lebih besar dari 90°."],multi:true,a:[1,2,3],ex:"Sudut lainnya = 180° − 68° = 112°. Sudut 112° adalah tumpul. Keduanya berpelurus, bukan berpenyiku.",praise:"Hebat! Kamu menggunakan hubungan sudut lurus dan klasifikasi sudut sekaligus."},
+{phase:1,kind:"PG • Aplikasi",topic:"Sudut bertolak belakang",stimulus:"Dua batang besi menjadi penyangga silang menara. Keduanya berpotongan dan membentuk empat sudut. Salah satu sudut besarnya 124°.",q:"Jika sudut yang ditanyakan tepat berhadapan dengan sudut 124°, berapa besar sudut tersebut?",opts:["56°","66°","124°","236°"],a:2,ex:"Sudut yang bertolak belakang besarnya sama. Jadi sudut tersebut adalah 124°.",praise:"Tepat! Sifat sudut bertolak belakang kamu kuasai."},
+{phase:1,kind:"PGK • Benar/Salah",topic:"Sifat dua garis berpotongan",stimulus:"Dua batang baja pada konstruksi atap saling berpotongan. Salah satu sudut yang terbentuk besarnya 116°.",q:"Tentukan Benar atau Salah untuk setiap pernyataan.",tf:["Sudut yang bertolak belakang dengan 116° juga 116°.","Sudut yang bersebelahan dengan 116° besarnya 116°.","Jumlah keempat sudut di sekitar titik perpotongan adalah 360°.","Dua sudut yang bersebelahan selalu sama besar."],a:[true,false,true,false],ex:"Sudut bertolak belakang sama besar. Sudut bersebelahan = 180° − 116° = 64°. Jumlah sudut di sekitar satu titik 360°. Sudut bersebelahan tidak selalu sama besar.",praise:"Luar biasa! Kamu memahami beberapa sifat garis berpotongan."},
+{phase:1,kind:"PGK • Pilih semua yang benar",topic:"Sudut refleks dan penuh",stimulus:"Sebuah kincir angin mini berputar sejauh tiga perempat putaran dari posisi awal.",q:"Pilih semua pernyataan yang benar.",opts:["A. Besar sudut putaran adalah 270°.","B. Sudut putaran termasuk sudut refleks.","C. Kincir membutuhkan tambahan putaran 120° untuk menyelesaikan satu putaran penuh.","D. Sudut putaran lebih besar daripada sudut lurus."],multi:true,a:[0,1,3],ex:"¾ × 360° = 270°. Sudut 270° adalah refleks. Sisa putaran = 360° − 270° = 90°. Sudut penuh adalah 360°.",praise:"Keren! Kamu menghubungkan pecahan putaran dengan ukuran sudut."},
+{phase:1,kind:"PG • Penalaran",topic:"Sudut berpelurus",stimulus:"Dua batang besi pagar bertemu pada satu titik dan membentuk sudut berpelurus. Hasil pengukuran sudut pertama adalah 84°.",q:"Besar sudut kedua adalah ....",opts:["86°","96°","106°","116°"],a:1,ex:"Sudut berpelurus berjumlah 180°. Jadi 180° − 84° = 96°.",praise:"Tepat! Kamu dapat menerapkan hubungan sudut pada situasi nyata."},
+{phase:1,kind:"PGK • Benar/Salah",topic:"Gabungan sudut penyiku",stimulus:"Penyangga atap berbentuk siku-siku. Sebuah batang diagonal membaginya menjadi dua sudut. Sudut pertama besarnya 60°.",q:"Tentukan Benar atau Salah untuk setiap pernyataan.",tf:["Sudut kedua besarnya 30°.","Kedua sudut jika dijumlahkan menghasilkan 90°.","Sudut pertama termasuk sudut tumpul."],a:[true,true,false],ex:"Sudut kedua = 90° − 60° = 30°. Keduanya berjumlah 90°. Sudut 60° termasuk sudut lancip, bukan tumpul.",praise:"Sempurna! Kamu menuntaskan tantangan terakhir dengan penalaran yang tepat."}
+];
+
+let index=0, score=0, correct=0, retries=0, wrong=0, chosen=null, attempts=0, locked=false, results=[];
+const $=id=>document.getElementById(id);
+$("startBtn").onclick=()=>{
+ const n=$("studentName").value.trim(), c=$("studentClass").value.trim();
+ if(!n||!c){alert("Isi nama dan kelas terlebih dahulu, ya!");return}
+ $("start").classList.add("hidden");$("quiz").classList.remove("hidden");render();
+};
+function render(){
+ const q=questions[index];chosen=null;attempts=0;locked=false;
+ $("phaseLabel").textContent=q.phase===0?"MISI 1 • PEMANASAN":"MISI 2 • TANTANGAN TKA";
+ $("counter").textContent=(index+1)+" / "+questions.length;
+ $("bar").style.width=(index/questions.length*100)+"%";
+ $("typeChip").textContent=q.kind.toUpperCase();
+ $("attemptChip").textContent="Kesempatan 1 dari 2";
+ $("scoreChip").textContent="Skor: "+score;
+ $("stimulus").textContent=q.stimulus;$("stimulus").classList.remove("hidden");
+ $("question").textContent=q.q;
+ $("visual").classList.toggle("hidden",!q.visual);
+ $("visual").innerHTML=q.visual?makeVisual(q.visual):"";
+ $("options").innerHTML="";
+ if(q.multi){
+   q.opts.forEach((o,i)=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.dataset.i=i;b.onclick=()=>{if(locked)return;b.classList.toggle("selected");updateMulti()};$("options").appendChild(b)});
+ }else if(q.tf){
+   q.tf.forEach((o,i)=>{let wrap=document.createElement("div");wrap.style.cssText="grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#fff;border:1px solid #d9e6df;border-radius:13px;padding:12px";let t=document.createElement("div");t.textContent=String.fromCharCode(65+i)+". "+o;t.style.fontWeight="750";let s=document.createElement("select");s.dataset.i=i;s.style.cssText="padding:9px;border:2px solid #d9e6df;border-radius:10px;color:#17345b;font-weight:800";s.innerHTML='<option value="">Pilih</option><option value="true">Benar</option><option value="false">Salah</option>';s.onchange=updateTF;wrap.append(t,s);$("options").appendChild(wrap)});
+ }else{
+   q.opts.forEach((o,i)=>{let b=document.createElement("button");b.className="option";b.textContent=String.fromCharCode(65+i)+". "+o;b.dataset.i=i;b.onclick=()=>{if(locked)return;chosen=i;document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("checkBtn").disabled=false};$("options").appendChild(b)});
+ }
+ $("feedback").className="hidden";$("feedback").innerHTML="";
+ $("checkBtn").classList.remove("hidden");$("checkBtn").disabled=true;$("nextBtn").classList.add("hidden");
+ $("instruction").textContent=q.multi?"Pilih semua jawaban yang benar.":q.tf?"Pilih Benar atau Salah untuk setiap pernyataan.":"Pilih satu jawaban yang paling tepat.";
+ $("checkBtn").onclick=check;
+}
+function updateMulti(){chosen=[...document.querySelectorAll(".option.selected")].map(b=>Number(b.dataset.i));$("checkBtn").disabled=chosen.length===0}
+function updateTF(){chosen=[...document.querySelectorAll("select")].map(s=>s.value);$("checkBtn").disabled=chosen.some(v=>v==="")}
+function same(a,b){if(Array.isArray(a)&&Array.isArray(b)){return a.length===b.length&&[...a].sort().every((v,i)=>v===[...b].sort()[i])}if(Array.isArray(a))return false;return a===b}
+function check(){
+ if(locked||chosen===null)return;
+ const q=questions[index];attempts++;
+ let ok;
+ if(q.tf)ok=chosen.every((v,i)=>v===String(q.a[i]));
+ else if(q.multi)ok=same(chosen,q.a);
+ else ok=chosen===q.a;
+ if(ok){
+   const earned=attempts===1?(100/questions.length):(60/questions.length);score+=earned;correct++;
+   results.push({q:index+1,status:attempts===1?"Benar pada percobaan pertama":"Benar setelah mengulang",earned});
+   showFeedback("good","🌟 "+(attempts===1?"Jawaban tepat!":"Akhirnya berhasil!"),q.praise+" "+q.ex+"<br><b>+"+earned.toFixed(1)+" poin</b>"+(attempts===2?" (poin dikurangi karena menggunakan kesempatan kedua).":""));
+   lockQuestion();
+ }else if(attempts===1){
+   retries++;
+   $("attemptChip").textContent="Kesempatan 2 dari 2";
+   showFeedback("try","🧩 Belum tepat—coba sekali lagi!","Tidak apa-apa, petualang hebat belajar dari percobaan. Periksa kembali informasi pada stimulus dan pikirkan hubungan sudut yang sesuai. Kesempatan kedua masih tersedia.");
+   if(q.tf){document.querySelectorAll("select").forEach(s=>s.value="")}else{document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"))}
+   chosen=null;$("checkBtn").disabled=true;
+ }else{
+   wrong++;results.push({q:index+1,status:"Belum tepat setelah dua percobaan",earned:0});
+   showFeedback("bad","🛠️ Misi ini belum berhasil","Tetap semangat! "+q.ex+"<br><b>0 poin untuk soal ini.</b>");
+   lockQuestion();
+ }
+ $("scoreChip").textContent="Skor: "+score;
+}
+function lockQuestion(){locked=true;$("checkBtn").classList.add("hidden");$("nextBtn").classList.remove("hidden");$("nextBtn").textContent=index===questions.length-1?"Lihat Hasil 🏆":"Lanjut →";$("nextBtn").onclick=()=>{index++;if(index<questions.length)render();else finish()}}
+function showFeedback(kind,title,body){$("feedback").className="feedback "+kind;$("feedback").innerHTML="<strong>"+title+"</strong>"+body}
+function makeVisual(type){
+ if(type==="clock")return `<svg viewBox="0 0 320 130" width="320" role="img" aria-label="Ilustrasi putaran jarum jam"><circle cx="160" cy="65" r="52" fill="#fff" stroke="#17345b" stroke-width="3"/><path d="M160 65 L160 13 A52 52 0 1 1 115 91 Z" fill="#ffc94a" opacity=".75"/><g stroke="#17345b" stroke-width="2"><path d="M160 13v8 M212 65h-8 M160 117v-8 M108 65h8"/></g><path d="M160 65 L160 22" stroke="#087f83" stroke-width="5" stroke-linecap="round"/><path d="M160 65 L120 88" stroke="#ff786c" stroke-width="5" stroke-linecap="round"/><circle cx="160" cy="65" r="5" fill="#17345b"/><text x="160" y="10" text-anchor="middle" font-size="10" fill="#17345b">12</text><text x="111" y="96" font-size="10" fill="#17345b">8</text><text x="160" y="126" text-anchor="middle" font-size="11" fill="#17345b">Putaran searah jarum jam</text></svg>`;
+ return "";
+}
+function finish(){
+ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");$("bar").style.width="100%";
+ $("resultGreeting").textContent=$("studentName").value+" dari kelas "+$("studentClass").value+", kamu telah menyelesaikan seluruh misi!";
+ $("finalScore").textContent=score.toFixed(1).replace(/\\.0$/, "");$("correctCount").textContent=correct;$("retryCount").textContent=retries;$("wrongCount").textContent=wrong;
+ let pct=score/100;
+ $("resultMessage").textContent=pct>=.85?"Luar biasa! Kamu adalah Master Sudut. Pertahankan ketelitianmu!":pct>=.65?"Hebat! Kemampuanmu berkembang. Terus berlatih agar makin mantap!":"Perjalananmu belum berhenti. Pelajari kembali penguatan di setiap soal dan coba lagi!";
+ $("reviewItems").innerHTML=results.map(r=>`<li>Soal ${r.q}: <b>${r.status}</b> — ${r.earned} poin</li>`).join("");
+ $("printBtn").onclick=()=>window.print();
+}
+</script>
+</body>
+</html>
